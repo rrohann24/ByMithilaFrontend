@@ -1,12 +1,14 @@
 import axios from 'axios';
 import Layout from './../components/Layout/Layout';
 import React,{useEffect, useState} from 'react';
+import { useCart } from "../context/cart";
 import { useParams, useNavigate } from 'react-router-dom';
 import "../styles/ProductDetailsStyles.css";
 const ProductDetails = () => {
   //initial details
   const params = useParams();
   const navigate = useNavigate();
+  const [cart, setCart] = useCart();
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
   useEffect(() => {
@@ -78,7 +80,16 @@ const ProductDetails = () => {
                 >
                   More Details
                 </button>
-                <button class="btn btn-secondary ms-1">ADD TO CART</button>
+                <button
+                  class="btn btn-secondary ms-1"
+                  onClick={() => {
+                    setCart([...cart, p]);
+                    localStorage.setItem("cart", JSON.stringify([...cart, p]));
+                    // toast.success("Item added to cart");
+                  }}
+                >
+                  ADD TO CART
+                </button>
               </div>
             </div>
           ))}
